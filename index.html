@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Implantação — Holmes BPM</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b2e;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --text-primary: #e6e9ef;
+    --text-secondary: #9ca3af;
+    --border: #262c42;
+    --green: #22c55e;
+    --yellow: #eab308;
+    --red: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, sans-serif;
+    padding: 32px;
+    line-height: 1.5;
+  }
+  .container { max-width: 1300px; margin: 0 auto; }
+  header {
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 24px;
+  }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { color: var(--text-secondary); font-size: 14px; }
+  .badge {
+    display: inline-block;
+    background: rgba(99,102,241,0.15);
+    color: var(--accent-light);
+    border: 1px solid rgba(99,102,241,0.3);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 12px;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .kpi-label { color: var(--text-secondary); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .kpi-value { font-size: 24px; font-weight: 700; color: var(--accent-light); }
+  .kpi-sub { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+  .section { margin-bottom: 36px; }
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+  .company-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 20px;
+  }
+  .company-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .company-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .company-name { font-size: 16px; font-weight: 700; }
+  .hours-tag {
+    background: rgba(99,102,241,0.15);
+    color: var(--accent-light);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .task-list { padding: 16px 20px; }
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(38,44,66,0.5);
+    font-size: 13.5px;
+  }
+  .task-item:last-child { border-bottom: none; }
+  .task-num {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    color: var(--accent-light);
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .task-text { flex: 1; }
+  .task-owner { color: var(--text-secondary); font-size: 11.5px; margin-top: 2px; }
+  .priority-high { color: var(--red); font-size: 10.5px; font-weight: 700; }
+  .priority-med { color: var(--yellow); font-size: 10.5px; font-weight: 700; }
+
+  .phase-track {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .phase-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .phase-num {
+    color: var(--accent-light);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .phase-title { font-weight: 700; margin-bottom: 8px; font-size: 14px; }
+  .phase-detail { font-size: 12.5px; color: var(--text-secondary); }
+
+  .chart-wrap {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    height: 280px;
+  }
+
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: rgba(234,179,8,0.08);
+    border: 1px solid rgba(234,179,8,0.25);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .footer-note strong { color: var(--yellow); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Plano de Implantação — Holmes BPM</h1>
+    <div class="subtitle">Grupo Martins · fluxos consolidados por processo (Martins Import · Rent a Car · Hotel Privê)</div>
+    <div class="badge">30h de implantação contratadas · R$ 8.000,00</div>
+    <div class="badge" style="margin-left:8px; background: rgba(34,197,94,0.12); color:#4ade80; border-color: rgba(34,197,94,0.3);">+ RH · Locação · Mobilidade Elétrica</div>
+  </header>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Investimento Ano 1</div>
+      <div class="kpi-value">R$ 17.000</div>
+      <div class="kpi-sub">R$ 750/mês + R$ 8.000 implantação</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Investimento recorrente</div>
+      <div class="kpi-value">R$ 9.000/ano</div>
+      <div class="kpi-sub">a partir do ano 2</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Horas de implantação</div>
+      <div class="kpi-value">30h</div>
+      <div class="kpi-sub">distribuídas entre os fluxos mapeados</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Licenciamento</div>
+      <div class="kpi-value">1 CNPJ</div>
+      <div class="kpi-sub">usuários ilimitados via grupos internos</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="dot"></span>Distribuição de horas por frente de trabalho</div>
+    <div class="chart-wrap">
+      <canvas id="hoursChart"></canvas>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="dot"></span>Tarefas por fluxo / processo</div>
+    <div class="company-grid">
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Entrega de Veículos</div>
+          <div class="hours-tag">~7h</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-text">Mapear fluxo completo: preparação → lavagem → acessórios → documentação → financeiro → emplacamento → checklist → entrega
+              <div class="task-owner">Depto: Operações / Vendas · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-text">Configurar checklist digital de vistoria com fotos obrigatórias antes da entrega
+              <div class="task-owner">Depto: Operações · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-text">Cadastrar responsáveis e definir SLA por etapa do processo
+              <div class="task-owner">Depto: TI / Gestão · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">4</div>
+            <div class="task-text">Configurar disparo automático de pesquisa de satisfação pós-entrega
+              <div class="task-owner">Depto: Marketing · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Combustível</div>
+          <div class="hours-tag">~4h</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-text">Configurar formulário de solicitação (veículo, placa, motorista, km, litros, posto, centro de custo)
+              <div class="task-owner">Depto: Frota / Financeiro · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-text">Configurar aprovação de abastecimento com anexo obrigatório de Nota Fiscal
+              <div class="task-owner">Depto: Gestor de Frota · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-text">Configurar alerta de consumo fora do padrão por veículo/km rodado
+              <div class="task-owner">Depto: Frota · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Compras</div>
+          <div class="hours-tag">~6h</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-text">Configurar fluxo com alçada por valor (Supervisor → Gerente → Diretor → Diretoria+Financeiro)
+              <div class="task-owner">Depto: Compras / Financeiro · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-text">Definir e validar valores de alçada com a Diretoria antes da configuração
+              <div class="task-owner">Depto: Diretoria · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-text">Configurar exceções: compra emergencial, TI, manutenção, CAPEX
+              <div class="task-owner">Depto: Compras · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">4</div>
+            <div class="task-text">Configurar cadastro e homologação de fornecedores dentro do fluxo
+              <div class="task-owner">Depto: Compras · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Financeiro & Faturamento</div>
+          <div class="hours-tag">~5h</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-text">Avaliar necessidade de ClickSign para documentos que exigem assinatura no processo
+              <div class="task-owner">Depto: Jurídico · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-text">Fluxo de Liberação de Crédito: solicitação → análise → aprovação por alçada → liberação → notificação ao solicitante
+              <div class="task-owner">Depto: Financeiro / Crédito e Cobrança · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-text">Fluxo de Reunião de MCI automatizada: coleta de indicadores por gestor → consolidação automática → geração de pauta → registro de evolução por período
+              <div class="task-owner">Depto: Diretoria / Gestão · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Governança & Recepção (Hotelaria)</div>
+          <div class="hours-tag">~6h</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-text">Fluxo de Governança: apartamento bloqueado → limpeza → manutenção → enxoval → inspeção
+              <div class="task-owner">Depto: Governança · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-text">Fluxo de Recepção: overbooking, upgrade, cancelamento, late checkout, early check-in
+              <div class="task-owner">Depto: Recepção · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-text">Configurar checklist de inspeção de apartamento com fotos antes/depois da limpeza
+              <div class="task-owner">Depto: Governança · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Manutenção</div>
+          <div class="hours-tag">transversal</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-text">Configurar chamados de manutenção predial: elétrica, hidráulica, ar condicionado, piscina, elevador
+              <div class="task-owner">Depto: Manutenção · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-text">Configurar plano de manutenção preventiva com agendamento automático por periodicidade
+              <div class="task-owner">Depto: Manutenção · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-text">Configurar registro de equipamentos com histórico de manutenções corretivas
+              <div class="task-owner">Depto: Manutenção · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">RH (operacional)</div>
+          <div class="hours-tag">novo</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-text">Fluxo de Admissão: solicitação de vaga → aprovação do gestor → documentação → exame admissional → cadastro → criação de usuário/acessos
+              <div class="task-owner">Depto: RH / TI · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-text">Fluxo de Solicitação de Férias: pedido → aprovação do gestor → validação RH → comunicado à folha
+              <div class="task-owner">Depto: RH · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-text">Fluxo de Ponto/Abono: solicitação de ajuste ou abono → aprovação do gestor → validação RH
+              <div class="task-owner">Depto: RH · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">4</div>
+            <div class="task-text">Fluxo de Benefícios: solicitação/alteração (VT, VR, plano de saúde) → validação RH → integração com fornecedor
+              <div class="task-owner">Depto: RH · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">5</div>
+            <div class="task-text">Automação: assinatura eletrônica (ClickSign) para contrato de admissão e termos de benefício
+              <div class="task-owner">Automação · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">6</div>
+            <div class="task-text">Configurar dashboard de headcount por empresa/departamento a partir dos fluxos de admissão/desligamento
+              <div class="task-owner">Depto: RH / TI · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Locação de Veículos</div>
+          <div class="hours-tag">novo</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-text">Fluxo de Reserva: solicitação → verificação de disponibilidade de frota → aprovação de crédito/caução → confirmação
+              <div class="task-owner">Depto: Locação · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-text">Fluxo de Check-out: vistoria de saída (fotos/checklist) → assinatura do contrato → liberação
+              <div class="task-owner">Depto: Locação / Pátio · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-text">Fluxo de Check-in (devolução): vistoria de retorno → comparação com checklist de saída → registro de avarias → cobrança adicional
+              <div class="task-owner">Depto: Locação / Pátio · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">4</div>
+            <div class="task-text">Integração com o fluxo de Entrega de Veículos já mapeado (reaproveita etapas de vistoria/checklist)
+              <div class="task-owner">Automação · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Mobilidade Elétrica</div>
+          <div class="hours-tag">novo segmento</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-text">Fluxo de Venda/Locação de veículo elétrico: consulta de autonomia/infraestrutura do cliente → simulação → proposta → contrato
+              <div class="task-owner">Depto: Vendas / Locação · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-text">Fluxo de Manutenção de Ponto de Recarga: solicitação de instalação/reparo → triagem técnica → execução → checklist de segurança
+              <div class="task-owner">Depto: Manutenção / TI · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-text">Fluxo de Monitoramento de Bateria/Autonomia da frota elétrica: alerta automático de necessidade de recarga
+              <div class="task-owner">Depto: Locação · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">4</div>
+            <div class="task-text">Chamado de suporte técnico especializado (carregador, software do veículo, atualização OTA)
+              <div class="task-owner">Depto: TI / Pós-Vendas · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">5</div>
+            <div class="task-text">Configurar indicador de adesão à mobilidade elétrica (locações/vendas elétricas vs. frota total)
+              <div class="task-owner">Depto: Gestão / Marketing · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Chamados Internos (TI, Financeiro, Marketing, Contabilidade)</div>
+          <div class="hours-tag">transversal</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-text">Configurar categorias de chamado de TI: computador, rede, ERP, e-mail, acesso, criação/exclusão de usuário
+              <div class="task-owner">Depto: TI · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-text">Configurar fluxo de adiantamento, reembolso e pagamento a fornecedor
+              <div class="task-owner">Depto: Financeiro · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-text">Configurar fluxo de solicitação de arte, campanha e evento de marketing
+              <div class="task-owner">Depto: Marketing · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">4</div>
+            <div class="task-text">Configurar SLA e escalonamento automático por categoria de chamado
+              <div class="task-owner">Depto: TI · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="dot"></span>Fases de rollout</div>
+    <div class="phase-track" style="grid-template-columns: repeat(5, 1fr);">
+      <div class="phase-card">
+        <div class="phase-num">Fase 1</div>
+        <div class="phase-title">Kickoff & Mapeamento</div>
+        <div class="phase-detail">Levantar fluxos reais com cada departamento, validar responsáveis e SLAs antes de configurar no sistema.</div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">Fase 2</div>
+        <div class="phase-title">Operações & Frota</div>
+        <div class="phase-detail">Rollout dos fluxos operacionais (entrega de veículos, combustível, governança, recepção) — ganho rápido e visível.</div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">Fase 3</div>
+        <div class="phase-title">Compras & Faturamento</div>
+        <div class="phase-detail">Compras e Faturamento com alçada — requer validação prévia de valores com a Diretoria.</div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">Fase 4</div>
+        <div class="phase-title">RH + Locação + Mobilidade Elétrica</div>
+        <div class="phase-detail">Fluxos adicionais fora do escopo original de 30h — exigem nova estimativa de horas com o fornecedor.</div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">Fase 5</div>
+        <div class="phase-title">Estabilização</div>
+        <div class="phase-detail">Ajuste de SLA, treinamento de usuários finais, revisão de gargalos nas primeiras semanas de uso.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <strong>Ponto de atenção:</strong> Entrega de Veículos, Combustível, Compras, Financeiro/Faturamento (incluindo Liberação de Crédito e Reunião de MCI), Governança/Recepção e Manutenção somam ~32h — próximo do escopo original de 30h contratado. RH, Locação, Mobilidade Elétrica e Chamados Internos são <strong>fluxos adicionais</strong> (~15h estimadas) fora do contrato atual — recomendo validar essa estimativa com o fornecedor antes de iniciar. Fluxos de alçada (Compras, Financeiro, Liberação de Crédito) exigem validação de valores com a Diretoria <em>antes</em> da configuração.
+  </div>
+
+</div>
+
+<script>
+  const ctx = document.getElementById('hoursChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Entrega Veículos', 'Combustível', 'Compras', 'Financeiro/Faturamento', 'Governança/Recepção', 'Manutenção', 'RH', 'Locação', 'Mobilidade Elétrica', 'Chamados Internos'],
+      datasets: [{
+        label: 'Horas estimadas',
+        data: [7, 4, 6, 5, 6, 4, 5, 4, 3, 3],
+        backgroundColor: '#6366f1',
+        borderRadius: 6,
+        barThickness: 34
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: '#262c42' },
+          ticks: { color: '#9ca3af' }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { color: '#9ca3af', font: { size: 10 } }
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
