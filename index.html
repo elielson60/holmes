@@ -122,6 +122,14 @@
   .task-text { flex: 1; }
   .task-owner { color: var(--text-secondary); font-size: 11.5px; margin-top: 2px; }
   .priority-high { color: var(--red); font-size: 10.5px; font-weight: 700; }
+  .priority-high, .priority-med {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 6px;
+  }
+  .priority-high { background: rgba(239,68,68,0.12); }
+  .priority-med { background: rgba(234,179,8,0.12); }
   .priority-med { color: var(--yellow); font-size: 10.5px; font-weight: 700; }
 
   .phase-track {
@@ -298,8 +306,109 @@
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="dot"></span>Tarefas por fluxo / processo</div>
+    <div class="section-title"><span class="dot"></span>Fluxos por empresa</div>
+    <div class="company-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Martins Import</div>
+          <div class="hours-tag">exclusivo + compartilhado</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Venda de Novos e Seminovos <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Combustível <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Financeiro/Faturamento (Liberação de Crédito, Reunião de MCI) <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Compras <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">RH <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Chamados Internos (TI/Financeiro/Marketing/Contabilidade) <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Manutenção <span class="priority-med">COMPARTILHADO</span></div></div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Martins Veículos</div>
+          <div class="hours-tag">exclusivo + compartilhado</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Venda de Novos e Seminovos <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Combustível <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Financeiro/Faturamento (Liberação de Crédito, Reunião de MCI) <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Compras <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">RH <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Chamados Internos (TI/Financeiro/Marketing/Contabilidade) <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Manutenção <span class="priority-med">COMPARTILHADO</span></div></div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Locação</div>
+          <div class="hours-tag">exclusivo + compartilhado</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Locação de Veículos (Reserva, Check-in/Check-out) <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Compras <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">RH <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Chamados Internos (TI/Financeiro/Marketing/Contabilidade) <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Manutenção <span class="priority-med">COMPARTILHADO</span></div></div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">MME</div>
+          <div class="hours-tag">exclusivo + compartilhado</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Mobilidade Elétrica (venda/locação, ponto de recarga, monitoramento) <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Compras <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">RH <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Chamados Internos (TI/Financeiro/Marketing/Contabilidade) <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Manutenção <span class="priority-med">COMPARTILHADO</span></div></div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Hotel Privê do Atalaia</div>
+          <div class="hours-tag">exclusivo + compartilhado</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Governança/Imobilizados <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Contratos de Eventos (Próprios e Terceiros) <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Programa de Associados & Transferência de Titularidade <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Devolução/Estorno de Reserva <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Compras <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">RH <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Chamados Internos (TI/Financeiro/Marketing/Contabilidade) <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Manutenção <span class="priority-med">COMPARTILHADO</span></div></div>
+        </div>
+      </div>
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Restaurante</div>
+          <div class="hours-tag">compartilhado</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Compras <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">RH <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Chamados Internos (TI/Financeiro/Marketing/Contabilidade) <span class="priority-med">COMPARTILHADO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Manutenção <span class="priority-med">COMPARTILHADO</span></div></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="footer-note" style="margin-top:16px;">
+      <strong>Legenda:</strong> <span class="priority-high">EXCLUSIVO</span> — fluxo usado apenas por aquela empresa. <span class="priority-med">COMPARTILHADO</span> — fluxo transversal usado por todas as 7 empresas do grupo (Compras, RH, Chamados Internos, Manutenção).
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="dot"></span>Tarefas detalhadas por fluxo / processo</div>
     <div class="company-grid">
+
 
       <div class="company-card">
         <div class="company-header">
@@ -707,7 +816,6 @@
       </div>
 
     </div>
-  </div>
 
   <div class="section">
     <div class="section-title"><span class="dot"></span>Fases de rollout</div>
