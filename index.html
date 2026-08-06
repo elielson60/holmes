@@ -373,6 +373,7 @@
         </div>
         <div class="task-list">
           <div class="task-item"><div class="task-num">•</div><div class="task-text">Contrato Pré-venda / Locação <span class="priority-high">EXCLUSIVO</span></div></div>
+          <div class="task-item"><div class="task-num">•</div><div class="task-text">Autorização de Pedidos de Compras com Fornecedores — aprovação da Diretoria <span class="priority-high">EXCLUSIVO</span></div></div>
           <div class="task-item"><div class="task-num">•</div><div class="task-text">Combustível — Solicitação e Gestão <span class="priority-med">COMPARTILHADO</span></div></div>
           <div class="task-item"><div class="task-num">•</div><div class="task-text">Contratos de Eventos/Mão de Obra (Terceiros) <span class="priority-med">COMPARTILHADO</span></div></div>
           <div class="task-item"><div class="task-num">•</div><div class="task-text">Compras — automação do processo de faturamento, validação automática de documentos e aprovações <span class="priority-med">COMPARTILHADO</span></div></div>
@@ -427,6 +428,39 @@
   <div class="section">
     <div class="section-title"><span class="dot"></span>Tarefas detalhadas por fluxo / processo</div>
     <div class="company-grid">
+
+      <div class="company-card">
+        <div class="company-header">
+          <div class="company-name">Autorização de Pedidos de Compras (MME)</div>
+          <div class="hours-tag">~3h</div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-num">1</div>
+            <div class="task-text">Fluxo de Pedido de Compra com Fornecedores: solicitação do pedido → cotação/orçamento com fornecedor → validação técnica → envio para aprovação da Diretoria
+              <div class="task-owner">Depto: Compras / MME · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">2</div>
+            <div class="task-text">Fluxo de Aprovação da Diretoria: análise do pedido → aprovação ou reprovação → justificativa em caso de reprovação → liberação para emissão do pedido de compra ao fornecedor
+              <div class="task-owner">Depto: Diretoria · <span class="priority-high">ALTA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">3</div>
+            <div class="task-text">Configurar notificação automática à Diretoria a cada novo pedido pendente e alerta de prazo de resposta
+              <div class="task-owner">Depto: TI / Diretoria · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-num">4</div>
+            <div class="task-text">Configurar registro de histórico de pedidos aprovados/reprovados por fornecedor para auditoria
+              <div class="task-owner">Depto: Compras · <span class="priority-med">MÉDIA</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="company-card">
         <div class="company-header">
@@ -982,10 +1016,10 @@
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Venda Novos/Seminovos', 'Combustível', 'Compras', 'Financeiro/Faturamento', 'Governança/Imobilizados', 'Contratos Eventos', 'Associados/Titularidade', 'Estorno Reserva', 'Manutenção', 'RH', 'Locação', 'Mobilidade Elétrica', 'Chamados Internos', 'Controle de Portaria'],
+      labels: ['Venda Novos/Seminovos', 'Combustível', 'Compras', 'Financeiro/Faturamento', 'Governança/Imobilizados', 'Contratos Eventos', 'Associados/Titularidade', 'Estorno Reserva', 'Manutenção', 'RH', 'Locação', 'Mobilidade Elétrica', 'Chamados Internos', 'Controle de Portaria', 'Autorização Pedidos (MME)'],
       datasets: [{
         label: 'Horas estimadas',
-        data: [9, 4, 6, 5, 3, 4, 3, 3, 4, 5, 4, 2, 3, 4],
+        data: [9, 4, 6, 5, 3, 4, 3, 3, 4, 5, 4, 2, 3, 4, 3],
         backgroundColor: '#6366f1',
         borderRadius: 6,
         barThickness: 34
